@@ -1,4 +1,4 @@
-export default function ViewToggles({ overlays, onToggle }) {
+export default function ViewToggles({ overlays, onToggle, accurateScale, onToggleScale }) {
   const toggles = [
     { key: 'orbitTrail', label: 'Orbit trail' },
     { key: 'orbitalPlane', label: 'Moon plane' },
@@ -19,6 +19,16 @@ export default function ViewToggles({ overlays, onToggle }) {
           {label}
         </label>
       ))}
+      <div className="border-t border-white/10 pt-1.5 mt-1.5">
+        <button
+          onClick={onToggleScale}
+          className={`w-full text-left px-1 py-0.5 rounded transition-colors ${
+            accurateScale ? 'text-yellow-300' : 'text-white/70 hover:text-white'
+          }`}
+        >
+          {accurateScale ? 'Accurate scale' : 'Exaggerated scale'}
+        </button>
+      </div>
     </div>
   );
 }

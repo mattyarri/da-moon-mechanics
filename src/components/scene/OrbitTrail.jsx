@@ -1,14 +1,13 @@
 import { useMemo } from 'react';
 import { getMoonOrbitTrail } from '../../utils/astronomy';
-import { EXAGGERATED_SCALE } from '../../constants';
 
-export default function OrbitTrail({ simTime }) {
+export default function OrbitTrail({ simTime, scale }) {
   const trailKey = Math.floor(simTime.getTime() / 600000);
 
   const positions = useMemo(() => {
-    const trail = getMoonOrbitTrail(simTime, EXAGGERATED_SCALE, 200);
+    const trail = getMoonOrbitTrail(simTime, scale, 200);
     return new Float32Array(trail.flat());
-  }, [trailKey]);
+  }, [trailKey, scale]);
 
   return (
     <line key={trailKey}>

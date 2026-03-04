@@ -1,8 +1,7 @@
 import { useMemo } from 'react';
 import * as THREE from 'three';
-import { EXAGGERATED_SCALE } from '../../constants';
 
-export default function OrbitalPlane({ earthPos, moonOrbitalNormal }) {
+export default function OrbitalPlane({ earthPos, moonOrbitalNormal, scale }) {
   const quaternion = useMemo(() => {
     const up = new THREE.Vector3(0, 0, 1);
     const normal = new THREE.Vector3(...moonOrbitalNormal);
@@ -11,7 +10,7 @@ export default function OrbitalPlane({ earthPos, moonOrbitalNormal }) {
 
   return (
     <mesh position={earthPos} quaternion={quaternion}>
-      <ringGeometry args={[EXAGGERATED_SCALE.moonOrbitRadius * 0.3, EXAGGERATED_SCALE.moonOrbitRadius * 1.2, 128]} />
+      <ringGeometry args={[scale.moonOrbitRadius * 0.3, scale.moonOrbitRadius * 1.2, 128]} />
       <meshBasicMaterial
         color="#4488ff"
         transparent

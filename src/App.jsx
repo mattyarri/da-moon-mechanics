@@ -7,10 +7,13 @@ import DataReadouts from './components/ui/DataReadouts';
 import ViewToggles from './components/ui/ViewToggles';
 import useSimulationTime from './hooks/useSimulationTime';
 import useAstronomy from './hooks/useAstronomy';
+import { EXAGGERATED_SCALE, ACCURATE_SCALE } from './constants';
 
 export default function App() {
   const { simTime, isPlaying, speed, setSpeed, advance, togglePlaying } = useSimulationTime();
-  const astroData = useAstronomy(simTime);
+  const [accurateScale, setAccurateScale] = useState(false);
+  const scale = accurateScale ? ACCURATE_SCALE : EXAGGERATED_SCALE;
+  const astroData = useAstronomy(simTime, scale);
   const [overlays, setOverlays] = useState({
     orbitTrail: true,
     orbitalPlane: false,
@@ -31,11 +34,16 @@ export default function App() {
       >
         <color attach="background" args={['#0a0a1a']} />
         <ambientLight intensity={0.15} />
-        <SolarSystem astroData={astroData} simTime={simTime} advance={advance} overlays={overlays} />
-        <CameraController />
+        <SolarSystem astroData={astroData} simTime={simTime} advance={advance} overlays={overlays} scale={scale} />
+        <CameraController scale={scale} />
       </Canvas>
       <DataReadouts astroData={astroData} />
-      <ViewToggles overlays={overlays} onToggle={toggleOverlay} />
+      <ViewToggles
+        overlays={overlays}
+        onToggle={toggleOverlay}
+        accurateScale={accurateScale}
+        onToggleScale={() => setAccurateScale(s => !s)}
+      />
       <TimeControls
         simTime={simTime}
         isPlaying={isPlaying}

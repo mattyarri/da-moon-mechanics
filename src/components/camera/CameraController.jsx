@@ -1,12 +1,13 @@
 import { OrbitControls } from '@react-three/drei';
 
-export default function CameraController() {
+export default function CameraController({ scale }) {
   return (
     <OrbitControls
       enableDamping
       dampingFactor={0.05}
-      minDistance={5}
-      maxDistance={500}
+      minDistance={0.001}
+      maxDistance={scale.earthOrbitRadius * 3}
+      zoomSpeed={1}
       zoomToCursor
     />
   );

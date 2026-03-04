@@ -1,10 +1,11 @@
 import * as THREE from 'three';
-import { EXAGGERATED_SCALE, EARTH_AXIAL_TILT } from '../../constants';
+import { EARTH_AXIAL_TILT } from '../../constants';
 
 const AXIAL_TILT_RAD = THREE.MathUtils.degToRad(EARTH_AXIAL_TILT);
-const AXIS_LENGTH = EXAGGERATED_SCALE.earthRadius * 3;
 
-export default function AxisLine({ earthPos }) {
+export default function AxisLine({ earthPos, scale }) {
+  const axisLength = scale.earthRadius * 3;
+
   return (
     <group position={earthPos}>
       <group rotation={[0, 0, AXIAL_TILT_RAD]}>
@@ -12,7 +13,7 @@ export default function AxisLine({ earthPos }) {
           <bufferGeometry>
             <bufferAttribute
               attach="attributes-position"
-              array={new Float32Array([0, -AXIS_LENGTH, 0, 0, AXIS_LENGTH, 0])}
+              array={new Float32Array([0, -axisLength, 0, 0, axisLength, 0])}
               count={2}
               itemSize={3}
             />
