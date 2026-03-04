@@ -19,7 +19,7 @@ function createGlowTexture() {
 
 export default function Sun({ scale }) {
   const meshRef = useRef();
-  const texture = useTexture('/textures/sun.jpg');
+  const texture = useTexture(`${import.meta.env.BASE_URL}textures/sun.jpg`);
   const glowTexture = useMemo(createGlowTexture, []);
 
   return (

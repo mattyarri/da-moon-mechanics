@@ -3,7 +3,7 @@ import { useTexture } from '@react-three/drei';
 
 export default function Moon({ position, earthPos, scale }) {
   const meshRef = useRef();
-  const texture = useTexture('/textures/moon.jpg');
+  const texture = useTexture(`${import.meta.env.BASE_URL}textures/moon.jpg`);
 
   const rotation = useMemo(() => {
     const dx = earthPos[0] - position[0];

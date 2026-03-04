@@ -8,7 +8,7 @@ const AXIAL_TILT_RAD = THREE.MathUtils.degToRad(EARTH_AXIAL_TILT);
 
 export default function Earth({ position, simTime, scale }) {
   const meshRef = useRef();
-  const texture = useTexture('/textures/earth_daymap.jpg');
+  const texture = useTexture(`${import.meta.env.BASE_URL}textures/earth_daymap.jpg`);
 
   // Use GMST to correctly orient continents relative to the Sun
   const gmstHours = SiderealTime(MakeTime(simTime));
