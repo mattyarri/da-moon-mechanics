@@ -1,6 +1,7 @@
 export default function ViewToggles({ overlays, onToggle }) {
   const toggles = [
-    { key: 'orbitalPlane', label: 'Moon orbit' },
+    { key: 'orbitTrail', label: 'Orbit trail' },
+    { key: 'orbitalPlane', label: 'Moon plane' },
     { key: 'eclipticPlane', label: 'Ecliptic' },
     { key: 'axisLine', label: 'Earth axis' },
   ];

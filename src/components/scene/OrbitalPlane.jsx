@@ -4,7 +4,7 @@ import { EXAGGERATED_SCALE } from '../../constants';
 
 export default function OrbitalPlane({ earthPos, moonOrbitalNormal }) {
   const quaternion = useMemo(() => {
-    const up = new THREE.Vector3(0, 1, 0);
+    const up = new THREE.Vector3(0, 0, 1);
     const normal = new THREE.Vector3(...moonOrbitalNormal);
     return new THREE.Quaternion().setFromUnitVectors(up, normal);
   }, [moonOrbitalNormal]);

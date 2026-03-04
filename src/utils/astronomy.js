@@ -99,6 +99,43 @@ export function getAstronomyData(date, scale) {
 }
 
 /**
+ * Compute Moon orbit trail points (trailing behind current position).
+ * Returns array of [x, y, z] scene positions, oldest to newest.
+ */
+export function getMoonOrbitTrail(date, scale, numPoints = 128) {
+  const ORBITAL_PERIOD_MS = 27.3 * 86400000;
+  const step = ORBITAL_PERIOD_MS / numPoints;
+  const points = [];
+
+  for (let i = 0; i <= numPoints; i++) {
+    const t = new Date(date.getTime() - ORBITAL_PERIOD_MS + i * step);
+    const astroTime = MakeTime(t);
+
+    const earthEq = HelioVector(Body.Earth, astroTime);
+    const earthEcl = equatorialToEcliptic(earthEq);
+    const earthScene = eclipticToScene(earthEcl);
+    const earthDist = Math.sqrt(earthEcl.x ** 2 + earthEcl.y ** 2 + earthEcl.z ** 2);
+    const earthScaleFactor = scale.earthOrbitRadius / earthDist;
+    const earthPos = scalePosition(earthScene, earthScaleFactor);
+
+    const moonEq = GeoVector(Body.Moon, astroTime, true);
+    const moonEcl = equatorialToEcliptic(moonEq);
+    const moonScene = eclipticToScene(moonEcl);
+    const moonDist = Math.sqrt(moonEcl.x ** 2 + moonEcl.y ** 2 + moonEcl.z ** 2);
+    const moonScaleFactor = scale.moonOrbitRadius / moonDist;
+    const moonRelPos = scalePosition(moonScene, moonScaleFactor);
+
+    points.push([
+      earthPos[0] + moonRelPos[0],
+      earthPos[1] + moonRelPos[1],
+      earthPos[2] + moonRelPos[2],
+    ]);
+  }
+
+  return points;
+}
+
+/**
  * Get the moon phase name from the phase angle (0-360°).
  */
 function getPhaseName(angle) {

@@ -12,6 +12,7 @@ export default function App() {
   const { simTime, isPlaying, speed, setSpeed, advance, togglePlaying } = useSimulationTime();
   const astroData = useAstronomy(simTime);
   const [overlays, setOverlays] = useState({
+    orbitTrail: true,
     orbitalPlane: false,
     eclipticPlane: false,
     axisLine: false,

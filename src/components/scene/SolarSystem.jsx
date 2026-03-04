@@ -6,6 +6,7 @@ import TimeAdvancer from './TimeAdvancer';
 import OrbitalPlane from './OrbitalPlane';
 import EclipticPlane from './EclipticPlane';
 import AxisLine from './AxisLine';
+import OrbitTrail from './OrbitTrail';
 
 export default function SolarSystem({ astroData, simTime, advance, overlays }) {
   const { earthPos, moonPos, moonOrbitalNormal } = astroData;
@@ -16,6 +17,7 @@ export default function SolarSystem({ astroData, simTime, advance, overlays }) {
       <Sun />
       <Earth position={earthPos} simTime={simTime} />
       <Moon position={moonPos} earthPos={earthPos} />
+      {overlays.orbitTrail && <OrbitTrail simTime={simTime} />}
       {overlays.orbitalPlane && <OrbitalPlane earthPos={earthPos} moonOrbitalNormal={moonOrbitalNormal} />}
       {overlays.eclipticPlane && <EclipticPlane />}
       {overlays.axisLine && <AxisLine earthPos={earthPos} />}
