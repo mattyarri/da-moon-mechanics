@@ -45,7 +45,7 @@ Follow these steps sequentially. After each step: verify with `npm run dev`, the
 - [x] Step 0: Initialize repo, install dependencies, create this file
 - [x] Step 1: **Scaffold** — Vite + React + R3F + Tailwind. Empty canvas with OrbitControls. Confirm it runs.
 - [x] Step 2: **Sun + Earth** — Textured spheres, point light on Sun, Earth rotation + 23.4° axial tilt. Confirm shadows work.
-- [ ] Step 3: **Moon + Astronomy Engine** — Integrate astronomy-engine. Position Moon accurately for current date. Verify against known phase.
+- [x] Step 3: **Moon + Astronomy Engine** — Integrate astronomy-engine. Position Moon accurately for current date. Verify against known phase.
 - [ ] Step 4: **Time system** — `useSimulationTime` hook. Play/pause, speed control. Bodies animate correctly.
 - [ ] Step 5: **Moon phase + data readouts** — Phase name, illumination %, floating HUD panel (minimal, expandable).
 - [ ] Step 6: **Orbital overlays** — Moon orbital plane (semi-transparent disc), Earth axis line, ecliptic plane. Toggle controls.
@@ -56,7 +56,7 @@ Follow these steps sequentially. After each step: verify with `npm run dev`, the
 - [ ] Step 11: **Visual polish** — Starfield/skybox, texture quality, shadow tuning, UI polish.
 - [ ] Step 12: **Deploy** — GitHub Actions workflow for GitHub Pages, `public/CNAME` file for `damoon.mattyarri.com`.
 
-**Currently on: Step 3**
+**Currently on: Step 4**
 
 Update the checkbox and "Currently on" line after completing each step.
 
