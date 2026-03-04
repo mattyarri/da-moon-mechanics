@@ -1,6 +1,6 @@
 const SPEED_PRESETS = [
   { value: 1, label: '1x' },
-  { value: 1000, label: '1000x' },
+  { value: 3600, label: '1 hr/s' },
   { value: 86400, label: '1 day/s' },
   { value: 2592000, label: '1 mo/s' },
 ];

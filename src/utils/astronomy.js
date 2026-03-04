@@ -31,6 +31,10 @@ function scalePosition([x, y, z], factor) {
   return [x * factor, y * factor, z * factor];
 }
 
+function crossProduct([ax, ay, az], [bx, by, bz]) {
+  return [ay * bz - az * by, az * bx - ax * bz, ax * by - ay * bx];
+}
+
 /**
  * Get all body positions and phase data for a given Date.
  * Returns positions in scene coordinates, scaled to the given scale config.
@@ -72,6 +76,17 @@ export function getAstronomyData(date, scale) {
   // Earth-Moon distance in km (1 AU = 149,597,870.7 km)
   const moonDistKm = moonDist * 149597870.7;
 
+  // Moon orbital plane normal: cross product of Moon positions at two times
+  const futureTime = MakeTime(new Date(date.getTime() + 7 * 86400000));
+  const moonFutureEq = GeoVector(Body.Moon, futureTime, true);
+  const moonFutureEcl = equatorialToEcliptic(moonFutureEq);
+  const moonFutureScene = eclipticToScene(moonFutureEcl);
+
+  // Cross product of current and future Moon geocentric vectors (in scene coords)
+  const normal = crossProduct(moonScene, moonFutureScene);
+  const len = Math.sqrt(normal[0] ** 2 + normal[1] ** 2 + normal[2] ** 2);
+  const moonOrbitalNormal = [normal[0] / len, normal[1] / len, normal[2] / len];
+
   return {
     earthPos,
     moonPos,
@@ -79,6 +94,7 @@ export function getAstronomyData(date, scale) {
     moonIllumination: illum.phase_fraction * 100,
     moonPhaseName: getPhaseName(phaseAngle),
     moonDistanceKm: moonDistKm,
+    moonOrbitalNormal,
   };
 }
 
