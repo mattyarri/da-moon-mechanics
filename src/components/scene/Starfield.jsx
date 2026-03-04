@@ -34,8 +34,8 @@ export default function Starfield() {
       </bufferGeometry>
       <pointsMaterial
         color="#ffffff"
-        size={30}
-        sizeAttenuation
+        size={1.5}
+        sizeAttenuation={false}
         transparent
         opacity={0.8}
         depthWrite={false}
