@@ -14,7 +14,8 @@ export default function Sun() {
       </mesh>
       <pointLight
         castShadow
-        intensity={2}
+        intensity={5}
+        decay={0}
         shadow-mapSize-width={2048}
         shadow-mapSize-height={2048}
         shadow-camera-near={1}

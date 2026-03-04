@@ -7,6 +7,7 @@ export default function CameraController() {
       dampingFactor={0.05}
       minDistance={5}
       maxDistance={500}
+      zoomToCursor
     />
   );
 }
