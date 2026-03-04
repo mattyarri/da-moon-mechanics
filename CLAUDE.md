@@ -53,10 +53,10 @@ Follow these steps sequentially. After each step: verify with `npm run dev`, the
 - [x] Step 8: **Scale toggle** — Exaggerated (default) vs. accurate scale modes with smooth transition.
 - [x] Step 9: **Camera presets** — Ecliptic top-down view + Earth surface view. Animated transitions between presets.
 - [x] Step 10: **Date picker + notable events** — Calendar date scrubber, pre-computed events dropdown (eclipses, solstices, equinoxes, supermoons ±2 years).
-- [ ] Step 11: **Visual polish** — Starfield/skybox, texture quality, shadow tuning, UI polish.
-- [ ] Step 12: **Deploy** — GitHub Actions workflow for GitHub Pages, `public/CNAME` file for `damoon.mattyarri.com`.
+- [x] Step 11: **Visual polish** — Starfield/skybox, texture quality, shadow tuning, UI polish.
+- [x] Step 12: **Deploy** — GitHub Actions workflow for GitHub Pages, `public/CNAME` file for `damoon.mattyarri.com`.
 
-**Currently on: Step 11**
+**All steps complete**
 
 Update the checkbox and "Currently on" line after completing each step.
 
