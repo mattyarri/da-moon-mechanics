@@ -8,13 +8,15 @@ import ViewToggles from './components/ui/ViewToggles';
 import CameraPresets from './components/ui/CameraPresets';
 import useSimulationTime from './hooks/useSimulationTime';
 import useAstronomy from './hooks/useAstronomy';
+import useNotableEvents from './hooks/useNotableEvents';
 import { EXAGGERATED_SCALE, ACCURATE_SCALE } from './constants';
 
 export default function App() {
-  const { simTime, isPlaying, speed, setSpeed, advance, togglePlaying } = useSimulationTime();
+  const { simTime, isPlaying, speed, setSpeed, setSimTime, advance, togglePlaying } = useSimulationTime();
   const [accurateScale, setAccurateScale] = useState(false);
   const scale = accurateScale ? ACCURATE_SCALE : EXAGGERATED_SCALE;
   const astroData = useAstronomy(simTime, scale);
+  const events = useNotableEvents();
   const [overlays, setOverlays] = useState({
     orbitTrail: true,
     orbitalPlane: false,
@@ -60,6 +62,8 @@ export default function App() {
         speed={speed}
         onTogglePlay={togglePlaying}
         onSetSpeed={setSpeed}
+        onSetDate={setSimTime}
+        events={events}
       />
     </div>
   );
