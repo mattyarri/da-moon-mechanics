@@ -1,4 +1,9 @@
-const SPEED_PRESETS = [1, 10, 100, 1000];
+const SPEED_PRESETS = [
+  { value: 1, label: '1x' },
+  { value: 1000, label: '1000x' },
+  { value: 86400, label: '1 day/s' },
+  { value: 2592000, label: '1 mo/s' },
+];
 
 export default function TimeControls({ simTime, isPlaying, speed, onTogglePlay, onSetSpeed }) {
   return (
@@ -11,15 +16,15 @@ export default function TimeControls({ simTime, isPlaying, speed, onTogglePlay, 
       </button>
 
       <div className="flex gap-1">
-        {SPEED_PRESETS.map(s => (
+        {SPEED_PRESETS.map(({ value, label }) => (
           <button
-            key={s}
-            onClick={() => onSetSpeed(s)}
+            key={value}
+            onClick={() => onSetSpeed(value)}
             className={`px-2 py-1 rounded text-xs transition-colors ${
-              speed === s ? 'bg-white/30' : 'hover:bg-white/10'
+              speed === value ? 'bg-white/30' : 'hover:bg-white/10'
             }`}
           >
-            {s}x
+            {label}
           </button>
         ))}
       </div>

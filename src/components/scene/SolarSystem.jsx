@@ -3,10 +3,9 @@ import Sun from './Sun';
 import Earth from './Earth';
 import Moon from './Moon';
 import TimeAdvancer from './TimeAdvancer';
-import useAstronomy from '../../hooks/useAstronomy';
 
-export default function SolarSystem({ simTime, advance }) {
-  const { earthPos, moonPos } = useAstronomy(simTime);
+export default function SolarSystem({ astroData, advance }) {
+  const { earthPos, moonPos } = astroData;
 
   return (
     <Suspense fallback={null}>

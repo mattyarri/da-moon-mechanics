@@ -69,12 +69,16 @@ export function getAstronomyData(date, scale) {
   const phaseAngle = MoonPhase(astroTime);
   const illum = Illumination(Body.Moon, astroTime);
 
+  // Earth-Moon distance in km (1 AU = 149,597,870.7 km)
+  const moonDistKm = moonDist * 149597870.7;
+
   return {
     earthPos,
     moonPos,
     moonPhaseAngle: phaseAngle,
     moonIllumination: illum.phase_fraction * 100,
     moonPhaseName: getPhaseName(phaseAngle),
+    moonDistanceKm: moonDistKm,
   };
 }
 

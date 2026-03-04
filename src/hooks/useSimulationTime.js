@@ -3,7 +3,7 @@ import { useState, useCallback } from 'react';
 export default function useSimulationTime() {
   const [simTime, setSimTime] = useState(() => new Date());
   const [isPlaying, setIsPlaying] = useState(true);
-  const [speed, setSpeed] = useState(100);
+  const [speed, setSpeed] = useState(86400);
 
   const advance = useCallback((deltaSec) => {
     if (!isPlaying) return;
