@@ -8,33 +8,73 @@ const AXIAL_TILT_RAD = THREE.MathUtils.degToRad(EARTH_AXIAL_TILT);
 const SIDEREAL_DAY_MS = 86164.1 * 1000;
 const SURFACE_LAT = 40 * (Math.PI / 180); // 40°N
 
-export default function CameraController({ scale, cameraMode, earthPos, moonPos, simTime }) {
-  const controlsRef = useRef();
-  const { camera } = useThree();
-  const transitionRef = useRef({ active: false, start: 0, duration: 1.0, from: {}, to: {} });
+function startTransition(transitionRef, camera, controlsRef, toPos, toTarget) {
+  const t = transitionRef.current;
+  t.active = true;
+  t.start = performance.now() / 1000;
+  t.duration = 1.0;
+  t.fromPos = camera.position.clone();
+  t.fromTarget = controlsRef.current?.target.clone() || new THREE.Vector3();
+  t.toPos = toPos;
+  t.toTarget = toTarget;
+}
 
-  // Start transition when mode changes to topDown
+export default function CameraController({ scale, cameraMode, onSetMode, earthPos, moonPos, simTime }) {
+  const controlsRef = useRef();
+  const { camera, gl } = useThree();
+  const transitionRef = useRef({ active: false });
+  const prevScaleRef = useRef(scale);
+
+  // Animate camera when switching to topDown
   useEffect(() => {
     if (cameraMode === 'topDown') {
-      const t = transitionRef.current;
-      t.active = true;
-      t.start = performance.now() / 1000;
-      t.duration = 1.0;
-      t.fromPos = camera.position.clone();
-      t.fromTarget = controlsRef.current?.target.clone() || new THREE.Vector3();
-      t.toPos = new THREE.Vector3(earthPos[0], scale.earthOrbitRadius * 0.8, earthPos[2]);
-      t.toTarget = new THREE.Vector3(...earthPos);
+      const height = scale.moonOrbitRadius * 3;
+      startTransition(
+        transitionRef, camera, controlsRef,
+        new THREE.Vector3(earthPos[0], height, earthPos[2]),
+        new THREE.Vector3(...earthPos),
+      );
     }
   }, [cameraMode]);
+
+  // Break out of topDown on user interaction
+  useEffect(() => {
+    if (cameraMode !== 'topDown') return;
+
+    const handleInteraction = () => {
+      if (!transitionRef.current.active) {
+        onSetMode('free');
+      }
+    };
+
+    const canvas = gl.domElement;
+    canvas.addEventListener('pointerdown', handleInteraction);
+    return () => {
+      canvas.removeEventListener('pointerdown', handleInteraction);
+    };
+  }, [cameraMode, gl, onSetMode]);
+
+  // Animate camera to Earth when scale changes
+  useEffect(() => {
+    if (prevScaleRef.current !== scale) {
+      prevScaleRef.current = scale;
+      const viewDist = scale.moonOrbitRadius * 3;
+      startTransition(
+        transitionRef, camera, controlsRef,
+        new THREE.Vector3(earthPos[0], viewDist * 0.5, earthPos[2] + viewDist),
+        new THREE.Vector3(...earthPos),
+      );
+    }
+  }, [scale]);
 
   useFrame(() => {
     const t = transitionRef.current;
 
-    // Animated transition (for topDown snap)
+    // Animated transition
     if (t.active) {
       const elapsed = performance.now() / 1000 - t.start;
       const progress = Math.min(elapsed / t.duration, 1);
-      const ease = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+      const ease = 1 - Math.pow(1 - progress, 3);
 
       camera.position.lerpVectors(t.fromPos, t.toPos, ease);
       if (controlsRef.current) {
@@ -47,24 +87,31 @@ export default function CameraController({ scale, cameraMode, earthPos, moonPos,
       return;
     }
 
-    // Earth surface mode: continuously position camera on Earth's surface
+    // Top-down: track Earth until user interacts
+    if (cameraMode === 'topDown' && controlsRef.current) {
+      const height = camera.position.y - controlsRef.current.target.y;
+      controlsRef.current.target.set(earthPos[0], earthPos[1], earthPos[2]);
+      camera.position.set(earthPos[0], earthPos[1] + height, earthPos[2]);
+    }
+
+    // Earth surface mode
     if (cameraMode === 'earthSurface') {
       const rotationY = (simTime.getTime() / SIDEREAL_DAY_MS) * Math.PI * 2;
 
-      // Position on Earth's surface at 40°N, rotated with Earth
       const r = scale.earthRadius * 1.05;
       const cosLat = Math.cos(SURFACE_LAT);
       const sinLat = Math.sin(SURFACE_LAT);
 
-      // Local surface position (before Earth tilt and rotation)
       const localX = r * cosLat * Math.sin(rotationY);
       const localY = r * sinLat;
       const localZ = r * cosLat * Math.cos(rotationY);
 
-      // Apply axial tilt (rotate around Z)
       const tiltedX = localX * Math.cos(AXIAL_TILT_RAD) - localY * Math.sin(AXIAL_TILT_RAD);
       const tiltedY = localX * Math.sin(AXIAL_TILT_RAD) + localY * Math.cos(AXIAL_TILT_RAD);
       const tiltedZ = localZ;
+
+      const upVec = new THREE.Vector3(tiltedX, tiltedY, tiltedZ).normalize();
+      camera.up.copy(upVec);
 
       camera.position.set(
         earthPos[0] + tiltedX,
@@ -72,22 +119,20 @@ export default function CameraController({ scale, cameraMode, earthPos, moonPos,
         earthPos[2] + tiltedZ,
       );
 
-      // Look at Moon
       camera.lookAt(moonPos[0], moonPos[1], moonPos[2]);
-      camera.up.set(tiltedX, tiltedY, tiltedZ).normalize();
-
-      if (controlsRef.current) {
-        controlsRef.current.target.set(moonPos[0], moonPos[1], moonPos[2]);
-      }
     }
   });
 
-  const orbitEnabled = cameraMode === 'free' || (cameraMode === 'topDown' && !transitionRef.current.active);
+  if (cameraMode === 'earthSurface') {
+    return null;
+  }
 
   return (
     <OrbitControls
       ref={controlsRef}
-      enabled={orbitEnabled}
+      enabled={cameraMode === 'free' || cameraMode === 'topDown'}
+      enableRotate={cameraMode === 'free'}
+      enablePan={cameraMode === 'free'}
       enableDamping
       dampingFactor={0.05}
       minDistance={0.001}

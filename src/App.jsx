@@ -31,7 +31,7 @@ export default function App() {
     <div className="w-full h-full relative">
       <Canvas
         shadows
-        camera={{ position: [0, 100, 300], fov: 50, near: 0.001 }}
+        camera={{ position: [0, 100, 300], fov: 50, near: 0.01, far: 100000 }}
         gl={{ antialias: true }}
       >
         <color attach="background" args={['#0a0a1a']} />
@@ -40,6 +40,7 @@ export default function App() {
         <CameraController
           scale={scale}
           cameraMode={cameraMode}
+          onSetMode={setCameraMode}
           earthPos={astroData.earthPos}
           moonPos={astroData.moonPos}
           simTime={simTime}
