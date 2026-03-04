@@ -49,7 +49,7 @@ export function getAstronomyData(date, scale) {
   const earthPos = scalePosition(earthScene, earthScaleFactor);
 
   // Moon geocentric position (equatorial J2000, AU)
-  const moonEqAU = GeoVector(Body.Moon, astroTime);
+  const moonEqAU = GeoVector(Body.Moon, astroTime, true);
   const moonEcl = equatorialToEcliptic(moonEqAU);
   const moonScene = eclipticToScene(moonEcl);
 
