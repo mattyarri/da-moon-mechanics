@@ -51,12 +51,12 @@ Follow these steps sequentially. After each step: verify with `npm run dev`, the
 - [x] Step 6: **Orbital overlays** — Moon orbital plane (semi-transparent disc), Earth axis line, ecliptic plane. Toggle controls.
 - [x] Step 7: **Orbit trail** — Faded trail line behind the Moon showing recent path.
 - [x] Step 8: **Scale toggle** — Exaggerated (default) vs. accurate scale modes with smooth transition.
-- [ ] Step 9: **Camera presets** — Ecliptic top-down view + Earth surface view. Animated transitions between presets.
+- [x] Step 9: **Camera presets** — Ecliptic top-down view + Earth surface view. Animated transitions between presets.
 - [ ] Step 10: **Date picker + notable events** — Calendar date scrubber, pre-computed events dropdown (eclipses, solstices, equinoxes, supermoons ±2 years).
 - [ ] Step 11: **Visual polish** — Starfield/skybox, texture quality, shadow tuning, UI polish.
 - [ ] Step 12: **Deploy** — GitHub Actions workflow for GitHub Pages, `public/CNAME` file for `damoon.mattyarri.com`.
 
-**Currently on: Step 9**
+**Currently on: Step 10**
 
 Update the checkbox and "Currently on" line after completing each step.
 
