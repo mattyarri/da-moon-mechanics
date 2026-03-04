@@ -7,7 +7,11 @@ const SPEED_PRESETS = [
   { value: 2592000, label: '1 mo/s' },
 ];
 
+const DAY_MS = 86400000;
+
 export default function TimeControls({ simTime, isPlaying, speed, onTogglePlay, onSetSpeed, onSetDate, events }) {
+  const step = (days) => onSetDate(new Date(simTime.getTime() + days * DAY_MS));
+
   return (
     <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-3 bg-black/70 backdrop-blur-sm rounded-lg px-4 py-2 text-white text-sm">
       <button
@@ -31,17 +35,14 @@ export default function TimeControls({ simTime, isPlaying, speed, onTogglePlay, 
         ))}
       </div>
 
-      <div className="border-l border-white/20 pl-3">
-        <input
-          type="date"
-          value={simTime.toISOString().slice(0, 10)}
-          onChange={(e) => {
-            if (e.target.value) {
-              onSetDate(new Date(e.target.value + 'T12:00:00Z'));
-            }
-          }}
-          className="bg-transparent text-white text-xs font-mono border-none outline-none cursor-pointer [color-scheme:dark]"
-        />
+      <div className="border-l border-white/20 pl-3 flex items-center gap-1">
+        <button onClick={() => step(-30)} className="px-1 py-0.5 rounded text-xs hover:bg-white/10">&laquo;</button>
+        <button onClick={() => step(-1)} className="px-1 py-0.5 rounded text-xs hover:bg-white/10">&lsaquo;</button>
+        <span className="font-mono text-xs px-1">
+          {simTime.toISOString().slice(0, 10)}
+        </span>
+        <button onClick={() => step(1)} className="px-1 py-0.5 rounded text-xs hover:bg-white/10">&rsaquo;</button>
+        <button onClick={() => step(30)} className="px-1 py-0.5 rounded text-xs hover:bg-white/10">&raquo;</button>
       </div>
 
       <div className="border-l border-white/20 pl-2">

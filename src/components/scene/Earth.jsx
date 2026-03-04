@@ -14,7 +14,7 @@ export default function Earth({ position, simTime, scale }) {
 
   return (
     <group position={position}>
-      <group rotation={[0, 0, AXIAL_TILT_RAD]}>
+      <group rotation={[-AXIAL_TILT_RAD, 0, 0]}>
         <mesh ref={meshRef} castShadow receiveShadow rotation={[0, rotationY, 0]}>
           <sphereGeometry args={[scale.earthRadius, 64, 64]} />
           <meshStandardMaterial map={texture} />

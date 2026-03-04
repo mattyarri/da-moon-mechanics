@@ -8,7 +8,7 @@ export default function AxisLine({ earthPos, scale }) {
 
   return (
     <group position={earthPos}>
-      <group rotation={[0, 0, AXIAL_TILT_RAD]}>
+      <group rotation={[-AXIAL_TILT_RAD, 0, 0]}>
         <line>
           <bufferGeometry>
             <bufferAttribute

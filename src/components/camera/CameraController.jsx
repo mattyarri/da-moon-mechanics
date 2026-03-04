@@ -106,9 +106,10 @@ export default function CameraController({ scale, cameraMode, onSetMode, earthPo
       const localY = r * sinLat;
       const localZ = r * cosLat * Math.cos(rotationY);
 
-      const tiltedX = localX * Math.cos(AXIAL_TILT_RAD) - localY * Math.sin(AXIAL_TILT_RAD);
-      const tiltedY = localX * Math.sin(AXIAL_TILT_RAD) + localY * Math.cos(AXIAL_TILT_RAD);
-      const tiltedZ = localZ;
+      // Apply axial tilt (rotate around X by -tilt, matching Earth.jsx)
+      const tiltedX = localX;
+      const tiltedY = localY * Math.cos(AXIAL_TILT_RAD) + localZ * Math.sin(AXIAL_TILT_RAD);
+      const tiltedZ = -localY * Math.sin(AXIAL_TILT_RAD) + localZ * Math.cos(AXIAL_TILT_RAD);
 
       const upVec = new THREE.Vector3(tiltedX, tiltedY, tiltedZ).normalize();
       camera.up.copy(upVec);
