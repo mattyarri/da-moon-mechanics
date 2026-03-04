@@ -1,6 +1,5 @@
 import { useRef, useMemo } from 'react';
 import { useTexture } from '@react-three/drei';
-import { EXAGGERATED_SCALE } from '../../constants';
 
 export default function Moon({ position, earthPos, scale }) {
   const meshRef = useRef();
@@ -8,8 +7,12 @@ export default function Moon({ position, earthPos, scale }) {
 
   const rotation = useMemo(() => {
     const dx = earthPos[0] - position[0];
+    const dy = earthPos[1] - position[1];
     const dz = earthPos[2] - position[2];
-    return [0, Math.atan2(dx, dz), 0];
+    const yaw = Math.atan2(dx, dz);
+    const dist = Math.sqrt(dx * dx + dz * dz);
+    const pitch = -Math.atan2(dy, dist);
+    return [pitch, yaw, 0];
   }, [position, earthPos]);
 
   return (

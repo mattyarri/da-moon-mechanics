@@ -6,6 +6,7 @@ import TimeControls from './components/ui/TimeControls';
 import DataReadouts from './components/ui/DataReadouts';
 import ViewToggles from './components/ui/ViewToggles';
 import CameraPresets from './components/ui/CameraPresets';
+import InfoPanel from './components/ui/InfoPanel';
 import useSimulationTime from './hooks/useSimulationTime';
 import useAstronomy from './hooks/useAstronomy';
 import useNotableEvents from './hooks/useNotableEvents';
@@ -48,7 +49,7 @@ export default function App() {
           simTime={simTime}
         />
       </Canvas>
-      <DataReadouts astroData={astroData} />
+      <DataReadouts astroData={astroData} simTime={simTime} events={events} />
       <CameraPresets cameraMode={cameraMode} onSetMode={setCameraMode} />
       <ViewToggles
         overlays={overlays}
@@ -56,6 +57,7 @@ export default function App() {
         accurateScale={accurateScale}
         onToggleScale={() => setAccurateScale(s => !s)}
       />
+      <InfoPanel />
       <TimeControls
         simTime={simTime}
         isPlaying={isPlaying}

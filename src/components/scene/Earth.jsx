@@ -1,16 +1,18 @@
 import { useRef } from 'react';
 import { useTexture } from '@react-three/drei';
 import * as THREE from 'three';
+import { SiderealTime, MakeTime } from 'astronomy-engine';
 import { EARTH_AXIAL_TILT } from '../../constants';
 
 const AXIAL_TILT_RAD = THREE.MathUtils.degToRad(EARTH_AXIAL_TILT);
-const SIDEREAL_DAY_MS = 86164.1 * 1000;
 
 export default function Earth({ position, simTime, scale }) {
   const meshRef = useRef();
   const texture = useTexture('/textures/earth_daymap.jpg');
 
-  const rotationY = (simTime.getTime() / SIDEREAL_DAY_MS) * Math.PI * 2;
+  // Use GMST to correctly orient continents relative to the Sun
+  const gmstHours = SiderealTime(MakeTime(simTime));
+  const rotationY = (gmstHours / 24) * Math.PI * 2;
 
   return (
     <group position={position}>

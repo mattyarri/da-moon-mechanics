@@ -2,10 +2,10 @@ import { useRef, useEffect } from 'react';
 import { useThree, useFrame } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
+import { SiderealTime, MakeTime } from 'astronomy-engine';
 import { EARTH_AXIAL_TILT } from '../../constants';
 
 const AXIAL_TILT_RAD = THREE.MathUtils.degToRad(EARTH_AXIAL_TILT);
-const SIDEREAL_DAY_MS = 86164.1 * 1000;
 const SURFACE_LAT = 40 * (Math.PI / 180); // 40°N
 
 function startTransition(transitionRef, camera, controlsRef, toPos, toTarget) {
@@ -96,7 +96,8 @@ export default function CameraController({ scale, cameraMode, onSetMode, earthPo
 
     // Earth surface mode
     if (cameraMode === 'earthSurface') {
-      const rotationY = (simTime.getTime() / SIDEREAL_DAY_MS) * Math.PI * 2;
+      const gmstHours = SiderealTime(MakeTime(simTime));
+      const rotationY = (gmstHours / 24) * Math.PI * 2;
 
       const r = scale.earthRadius * 1.05;
       const cosLat = Math.cos(SURFACE_LAT);

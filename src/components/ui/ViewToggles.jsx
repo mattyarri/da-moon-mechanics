@@ -7,7 +7,7 @@ export default function ViewToggles({ overlays, onToggle, accurateScale, onToggl
   ];
 
   return (
-    <div className="absolute top-4 right-4 bg-black/70 backdrop-blur-sm rounded-lg px-3 py-2 text-white text-xs space-y-1.5">
+    <div className="absolute top-14 sm:top-4 right-4 bg-black/70 backdrop-blur-sm rounded-lg px-3 py-2 text-white text-xs space-y-1.5">
       {toggles.map(({ key, label }) => (
         <label key={key} className="flex items-center gap-2 cursor-pointer hover:text-white/90">
           <input
