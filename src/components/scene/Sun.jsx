@@ -1,4 +1,4 @@
-import { useRef, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 
@@ -18,13 +18,12 @@ function createGlowTexture() {
 }
 
 export default function Sun({ scale }) {
-  const meshRef = useRef();
   const texture = useTexture(`${import.meta.env.BASE_URL}textures/sun.jpg`);
   const glowTexture = useMemo(createGlowTexture, []);
 
   return (
     <group>
-      <mesh ref={meshRef}>
+      <mesh>
         <sphereGeometry args={[scale.sunRadius, 64, 64]} />
         <meshBasicMaterial map={texture} />
       </mesh>

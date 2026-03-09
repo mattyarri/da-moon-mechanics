@@ -85,7 +85,9 @@ export function getAstronomyData(date, scale) {
   // Cross product of current and future Moon geocentric vectors (in scene coords)
   const normal = crossProduct(moonScene, moonFutureScene);
   const len = Math.sqrt(normal[0] ** 2 + normal[1] ** 2 + normal[2] ** 2);
-  const moonOrbitalNormal = [normal[0] / len, normal[1] / len, normal[2] / len];
+  const moonOrbitalNormal = len > 0
+    ? [normal[0] / len, normal[1] / len, normal[2] / len]
+    : [0, 1, 0]; // fallback to ecliptic normal
 
   return {
     earthPos,

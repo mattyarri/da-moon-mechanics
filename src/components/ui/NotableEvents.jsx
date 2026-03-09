@@ -13,9 +13,9 @@ export default function NotableEvents({ events, onSelectDate }) {
       </button>
       {open && (
         <div className="absolute bottom-full mb-2 left-0 w-64 max-h-60 overflow-y-auto bg-black/90 backdrop-blur-sm rounded-lg border border-white/10 text-xs">
-          {events.map((event, i) => (
+          {events.map((event) => (
             <button
-              key={i}
+              key={`${event.date.getTime()}-${event.type}`}
               onClick={() => {
                 onSelectDate(event.date);
                 setOpen(false);

@@ -1,8 +1,7 @@
-import { useRef, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useTexture } from '@react-three/drei';
 
 export default function Moon({ position, earthPos, scale }) {
-  const meshRef = useRef();
   const texture = useTexture(`${import.meta.env.BASE_URL}textures/moon.jpg`);
 
   const rotation = useMemo(() => {
@@ -16,7 +15,7 @@ export default function Moon({ position, earthPos, scale }) {
   }, [position, earthPos]);
 
   return (
-    <mesh ref={meshRef} position={position} rotation={rotation} castShadow receiveShadow>
+    <mesh position={position} rotation={rotation} castShadow receiveShadow>
       <sphereGeometry args={[scale.moonRadius, 64, 64]} />
       <meshStandardMaterial map={texture} />
     </mesh>
